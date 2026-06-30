@@ -1,39 +1,72 @@
 # Claude Multi-Profile Manager 🚀
 
-**Claude Multi-Profile Manager** es una herramienta automatizada para Windows diseñada para maximizar el uso de Claude.ai a través de múltiples perfiles de Google Chrome de forma fluida. Centraliza la gestión de tus cuentas, monitorea el consumo de límites de mensajes en segundo plano y te muestra en tiempo real desde la consola qué perfiles están listos (**Disponibles**) o bloqueados temporalmente (**Bloqueados con su hora de reinicio**).
+**Claude Multi-Profile Manager** es una solución automatizada para Windows diseñada para optimizar y maximizar el uso de Claude.ai a través de múltiples cuentas y perfiles de Google Chrome de forma centralizada. 
+
+El sistema consta de un backend ligero en Python, un UserScript para Tampermonkey que monitorea el estado de la cuota de mensajes en tiempo real, y un panel de control interactivo basado en CLI (`.bat`) para alternar rápidamente entre perfiles disponibles.
 
 ---
 
 ## ✨ Características Principales
-* [cite_start]**Ejecución Invisible:** El servidor backend en Python se levanta automáticamente en segundo plano sin interrumpir tu terminal.
-* **Detección Dinámica de Estados:** Gracias a un UserScript ligero inyectado mediante Tampermonkey, la herramienta detecta si una cuenta ha alcanzado el límite de mensajes gratuitos.
-* [cite_start]**Asistente de Configuración Integrado:** Automatiza la creación masiva de perfiles y la apertura de extensiones para ahorrar tiempo de configuración manual[cite: 9, 10, 11].
-* [cite_start]**Modo Debug Integrado:** Monitorea de forma reactiva y en tiempo real el archivo de estados entrantes.
+
+* 🎛️ **Panel de Control Dinámico:** Detecta automáticamente tus perfiles existentes de Chrome (`Default` y `Profile X`) y los mapea a un menú interactivo.
+* 🕵️‍♂️ **Ejecución 100% Invisible:** El servidor backend en Python se inicia automáticamente en segundo plano (ocultando la ventana de la consola) al arrancar el panel principal.
+* 📊 **Monitoreo de Estado en Tiempo Real:** Detecta automáticamente si un perfil está **Disponible** o **Bloqueado** (extrayendo e informando la hora exacta de restablecimiento si la página la muestra).
+* ⚡ **Asistente de Configuración Integrado:** * Creación masiva y automática de perfiles de Chrome en ráfaga.
+  * Apertura masiva de la Chrome Web Store para instalar Tampermonkey con un solo clic.
+  * Copia inteligente y automatizada del UserScript para una instalación rápida.
+* 🔍 **Modo Debug Integrado:** Monitoreo reactivo en tiempo real desde la consola para auditar los cambios en el archivo de estados (`claude_profiles_status.txt`).
 
 ---
 
 ## 🛠️ Requisitos Previos
-* **Windows OS**
-* **Python 3.x** instalado y añadido al `PATH`.
-* [cite_start]**Google Chrome** instalado[cite: 6].
+
+Antes de comenzar, asegúrate de tener instalado lo siguiente en tu sistema operativo Windows:
+
+1. **Google Chrome**.
+2. **Python 3.x** (Asegúrate de marcar la casilla **"Add Python to PATH"** durante la instalación).
 
 ---
 
-## 📦 Instalación y Configuración Rápida
+## 📦 Estructura del Proyecto
 
-1. **Clona o descarga este proyecto** en una carpeta de tu preferencia.
-2. *(Opcional)* Añade la ruta de la carpeta a las **Variables de Entorno (PATH)** de Windows para poder invocar la herramienta usando el comando `claude` (renombrando el archivo a `claude.bat`) desde cualquier terminal.
-3. [cite_start]Ejecuta el archivo interactivo `configurar_chrome.bat` [cite: 17] y sigue los pasos en pantalla:
-   * [cite_start]**Paso 1:** Instalará la extensión **Tampermonkey** en todos tus perfiles existentes de Chrome con un solo clic[cite: 18, 19].
-   * [cite_start]**Paso 2:** Inyectará el script de rastreo automático (`claude_detector.user.js`)[cite: 18, 20].
-   * [cite_start]**Paso 3 (¡Obligatorio para versiones recientes de Chrome!):** Abre `chrome://extensions/` en tus perfiles, activa el **Modo de desarrollador** (esquina superior derecha) y, dentro de los detalles de Tampermonkey, asegúrate de activar la opción **"Permitir secuencias de comandos del usuario"**[cite: 21].
+* `claude.bat`: Panel de control interactivo principal y lanzador invisible del servidor.
+* `configurar_chrome.bat`: Utilidad auxiliar independiente para la configuración inicial de perfiles y extensiones.
+* `claude_server.py`: Servidor HTTP local (Puerto `1915`) encargado de recibir y centralizar los estados enviados por los perfiles.
+* `claude_detector.user.js`: Script de Tampermonkey (JavaScript) que se ejecuta en Claude.ai para leer el DOM y reportar cuotas.
 
 ---
 
-## 🚀 Modo de Uso
+## 🚀 Instalación y Configuración Inicial
 
-Abre tu terminal favorita (CMD o PowerShell) y ejecuta los siguientes comandos según lo que necesites:
+Sigue estos sencillos pasos para dejar el entorno listo:
 
-### 1. Panel de Control Principal
+### Paso 1: Configurar Perfiles y Extensiones
+1. Ejecuta el archivo `configurar_chrome.bat`.
+2. Selecciona la **Opción 1** para abrir la tienda de extensiones en todos tus perfiles e instala **Tampermonkey**.
+3. Selecciona la **Opción 2** para preparar la inyección del script detector local.
+4. *(Opcional)* Si necesitas más cuentas, usa la **Opción 3** para generar perfiles limpios en ráfaga de forma automática.
+
+### Paso 2: Configuración Obligatoria de Seguridad en Chrome
+Debido a las políticas de seguridad recientes de Chromium, debes habilitar la ejecución de scripts locales:
+1. En cada perfil de Chrome, navega a `chrome://extensions/`.
+2. Activa el **Modo de desarrollador** (esquina superior derecha).
+3. Busca la extensión **Tampermonkey**, haz clic en **Detalles**.
+4. Desplázate hacia abajo y activa el interruptor **"Permitir secuencias de comandos del usuario"** (Allow webpage access / User scripts).
+
+### Paso 3: Instalar el UserScript en Tampermonkey
+El asistente facilita este proceso copiando el código al portapapeles:
+1. Al usar la opción correspondiente en el script, se abrirá el editor de scripts de Tampermonkey en cada perfil de Chrome.
+2. **Borra** cualquier código preexistente en el editor.
+3. **Pega** (`Ctrl + V`) el script que ya se encuentra copiado en tu portapapeles.
+4. **Guarda** los cambios (`Ctrl + S`).
+
+---
+
+## 💻 Modo de Uso
+
+Una vez configurado, puedes iniciar el ecosistema abriendo una terminal (CMD o PowerShell) en la carpeta del proyecto.
+
+### Menú Principal
+Para abrir el panel interactivo y levantar el servidor invisible, simplemente ejecuta:
 ```bash
-claude
+claude.bat
