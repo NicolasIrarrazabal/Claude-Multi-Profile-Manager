@@ -69,7 +69,7 @@ Una vez configurado, puedes iniciar el ecosistema abriendo una terminal (CMD o P
 ### Menú Principal
 Para abrir el panel interactivo y levantar el servidor invisible, simplemente ejecuta:
 ```bash
-claude.bat />
+claude.bat
 ```
 
 
